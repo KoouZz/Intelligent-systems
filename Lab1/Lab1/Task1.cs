@@ -1,19 +1,31 @@
-﻿public class App
-{
+﻿using System.Diagnostics;
 
-    public void DGEMM_BLAS(int A)
+
+
+public class App
+{
+    public int x = Convert.ToInt32(Console.ReadLine());
+
+    public int resolution = Convert.ToInt32(Console.ReadLine());
+    double[,] result;
+    double[,] ar1;
+    double[,] ar2;
+    public void DGEMM_BLAS(int A, int start, int end)
     {
-        double[,] result = new double[A, A];
-        double[,] ar1 = CreateArray(A);
-        double[,] ar2 = CreateArray(A);
-        int c;
+        if (result == null)
+        {
+            result = new double[A, A];
+            ar1 = CreateArray(A);
+            ar2 = CreateArray(A);
+        }
+        int c = 0;
         for (int k = 0; k < A; k++)
         {
-            c = 0;
+            c = start;
             for (int i = 0; i < A; i++)
             {
                 result[k, c] += ar1[k, i] * ar2[i, c];
-                if ((i + 1 >= A) && (c + 1 < A))
+                if ((i + 1 >= end) && (c + 1 < A))
                 {
                     i = -1;
                     c++;
@@ -46,28 +58,40 @@
 
 public class ThreadApp
 {
-    private int x;
     static void Main()
     {
+        Stopwatch sw = new Stopwatch();
 
-        ThreadApp thrapp = new ThreadApp();
-        thrapp.x = Convert.ToInt32(Console.ReadLine());
+        sw.Start();
 
         App app = new App();
-        for (int i = 0; i < thrapp.x; i++)
+        ThreadApp threadApp = new ThreadApp();
+        Thread.CurrentThread.Name = "main";
+        for (int i = 0; i < app.x - 1; i++)
         {
             Thread th = new Thread(new ParameterizedThreadStart(Work));
             th.Name = $"th{i}";
             th.Start(app);
         }
+        app.DGEMM_BLAS(app.resolution, 0, app.resolution / app.x);
+        Thread.CurrentThread.Join();
+        sw.Stop();
+        Console.WriteLine(sw);
     }
 
 
-    static void Work(object data)
+    static void Work(object apClass)
     {
 
-        data = (App)data;
-        data.DGEMM_BLAS();
+        App data = (App)apClass;
+        int id = Convert.ToInt32(Thread.CurrentThread.Name.Substring(2));
+        if ((data.resolution % data.x != 0) & (id + 1 == data.x))
+        {
+            data.DGEMM_BLAS(data.resolution, data.resolution / data.x * (id + 1), data.resolution / data.x * (id + 2) + data.resolution % data.x);
+        } else
+        {
+            data.DGEMM_BLAS(data.resolution, data.resolution / data.x * (id + 1), data.resolution / data.x * (id + 2));
+        }
 
     }
 }
