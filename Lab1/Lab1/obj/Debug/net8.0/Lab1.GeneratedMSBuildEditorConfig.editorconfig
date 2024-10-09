@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Lab1
-build_property.ProjectDir = D:\Study\Интеллектуальные системы\Лабараторная работа 1\Lab1\Lab1\
+build_property.ProjectDir = D:\Projects\C# learning\Console\study\Lab1\Lab1\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 

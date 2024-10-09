@@ -1,13 +1,7 @@
 ﻿public class App
 {
-    static void Main()
-    {
-        App ap = new App();
-        ap.x = Convert.ToInt32(Console.ReadLine());
-        ap.DGEMM_BLAS(ap.x);
-    }
-    int x;
-    private void DGEMM_BLAS(int A)
+
+    public void DGEMM_BLAS(int A)
     {
         double[,] result = new double[A, A];
         double[,] ar1 = CreateArray(A);
@@ -47,5 +41,33 @@
             }
         }
         return a;
+    }
+}
+
+public class ThreadApp
+{
+    private int x;
+    static void Main()
+    {
+
+        ThreadApp thrapp = new ThreadApp();
+        thrapp.x = Convert.ToInt32(Console.ReadLine());
+
+        App app = new App();
+        for (int i = 0; i < thrapp.x; i++)
+        {
+            Thread th = new Thread(new ParameterizedThreadStart(Work));
+            th.Name = $"th{i}";
+            th.Start(app);
+        }
+    }
+
+
+    static void Work(object data)
+    {
+
+        data = (App)data;
+        data.DGEMM_BLAS();
+
     }
 }
