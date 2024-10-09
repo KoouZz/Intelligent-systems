@@ -8,19 +8,19 @@
     "net8.0": []
   },
   "packageFolders": {
-    "C:\\Users\\user\\.nuget\\packages\\": {}
+    "C:\\Users\\KoouZz\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Projects\\C# learning\\Console\\study\\Lab1\\Lab1\\Lab1.csproj",
+      "projectUniqueName": "D:\\Study\\Интеллектуальные системы\\Лабараторная работа 1\\Lab1\\Lab1\\Lab1.csproj",
       "projectName": "Lab1",
-      "projectPath": "D:\\Projects\\C# learning\\Console\\study\\Lab1\\Lab1\\Lab1.csproj",
-      "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-      "outputPath": "D:\\Projects\\C# learning\\Console\\study\\Lab1\\Lab1\\obj\\",
+      "projectPath": "D:\\Study\\Интеллектуальные системы\\Лабараторная работа 1\\Lab1\\Lab1\\Lab1.csproj",
+      "packagesPath": "C:\\Users\\KoouZz\\.nuget\\packages\\",
+      "outputPath": "D:\\Study\\Интеллектуальные системы\\Лабараторная работа 1\\Lab1\\Lab1\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\KoouZz\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
