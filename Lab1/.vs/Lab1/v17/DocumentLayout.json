@@ -1,9 +1,9 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\Projects\\C# learning\\Console\\study\\Lab1\\",
+  "WorkspaceRootPath": "D:\\Study\\\u0418\u043D\u0442\u0435\u043B\u043B\u0435\u043A\u0442\u0443\u0430\u043B\u044C\u043D\u044B\u0435 \u0441\u0438\u0441\u0442\u0435\u043C\u044B\\\u041B\u0430\u0431\u0430\u0440\u0430\u0442\u043E\u0440\u043D\u0430\u044F \u0440\u0430\u0431\u043E\u0442\u0430 1\\Lab1\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{11638A06-0A68-44B5-B368-DA6A78BDFBE2}|Lab1\\Lab1.csproj|d:\\projects\\c# learning\\console\\study\\lab1\\lab1\\task1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{11638A06-0A68-44B5-B368-DA6A78BDFBE2}|Lab1\\Lab1.csproj|d:\\study\\\u0438\u043D\u0442\u0435\u043B\u043B\u0435\u043A\u0442\u0443\u0430\u043B\u044C\u043D\u044B\u0435 \u0441\u0438\u0441\u0442\u0435\u043C\u044B\\\u043B\u0430\u0431\u0430\u0440\u0430\u0442\u043E\u0440\u043D\u0430\u044F \u0440\u0430\u0431\u043E\u0442\u0430 1\\lab1\\lab1\\task1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{11638A06-0A68-44B5-B368-DA6A78BDFBE2}|Lab1\\Lab1.csproj|solutionrelative:lab1\\task1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -14,7 +14,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -29,12 +29,16 @@
               "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Task1.cs",
-              "DocumentMoniker": "D:\\Projects\\C# learning\\Console\\study\\Lab1\\Lab1\\Task1.cs",
+              "DocumentMoniker": "D:\\Study\\\u0418\u043D\u0442\u0435\u043B\u043B\u0435\u043A\u0442\u0443\u0430\u043B\u044C\u043D\u044B\u0435 \u0441\u0438\u0441\u0442\u0435\u043C\u044B\\\u041B\u0430\u0431\u0430\u0440\u0430\u0442\u043E\u0440\u043D\u0430\u044F \u0440\u0430\u0431\u043E\u0442\u0430 1\\Lab1\\Lab1\\Task1.cs",
               "RelativeDocumentMoniker": "Lab1\\Task1.cs",
-              "ToolTip": "D:\\Projects\\C# learning\\Console\\study\\Lab1\\Lab1\\Task1.cs",
+              "ToolTip": "D:\\Study\\\u0418\u043D\u0442\u0435\u043B\u043B\u0435\u043A\u0442\u0443\u0430\u043B\u044C\u043D\u044B\u0435 \u0441\u0438\u0441\u0442\u0435\u043C\u044B\\\u041B\u0430\u0431\u0430\u0440\u0430\u0442\u043E\u0440\u043D\u0430\u044F \u0440\u0430\u0431\u043E\u0442\u0430 1\\Lab1\\Lab1\\Task1.cs",
               "RelativeToolTip": "Lab1\\Task1.cs",
               "ViewState": "AgIAADIAAAAAAAAAAAAIwEYAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
