@@ -1,58 +1,79 @@
 ﻿using System.Diagnostics;
 
-
-
 public class App
 {
-    public int x = Convert.ToInt32(Console.ReadLine());
-
-    public int resolution = Convert.ToInt32(Console.ReadLine());
+    public int x;
+    public int resolution;
     double[,] result;
     double[,] ar1;
     double[,] ar2;
-    public void DGEMM_BLAS(int A, int start, int end)
+
+    public App(int x, int resolution)
     {
-        if (result == null)
+        this.x = x;
+        this.resolution = resolution;
+        result = new double[resolution, resolution];
+        ar1 = CreateArray(resolution);
+        ar2 = CreateArray(resolution);
+    }
+
+    public void DGEMM_BLAS(int start, int end)
+    {
+        for (int k = 0; k < resolution; k++)
         {
-            result = new double[A, A];
-            ar1 = CreateArray(A);
-            ar2 = CreateArray(A);
-        }
-        int c = 0;
-        for (int k = 0; k < A; k++)
-        {
-            c = start;
-            for (int i = 0; i < A; i++)
+            for (int i = start; i < end; i++)
             {
-                result[k, c] += ar1[k, i] * ar2[i, c];
-                if ((i + 1 >= end) && (c + 1 < A))
+                for (int j = 0; j < resolution; j++)
                 {
-                    i = -1;
-                    c++;
+                    result[k, i] += ar1[k, j] * ar2[j, i];
                 }
             }
         }
-        for (int i = 0; i < A; i++)
+    }
+
+    public void DGEMM_BLASS_PARALLEL()
+    {
+        ParallelOptions options = new ParallelOptions
         {
-            for (int j = 0; j < A; j++)
+            MaxDegreeOfParallelism = x // Устанавливаем максимальное количество параллельных потоков
+        };
+
+        Parallel.For(0, resolution, options, i =>
+        {
+            for (int j = 0; j < resolution; j++)
+            {
+                for (int k = 0; k < resolution; k++)
+                {
+                    result[i, j] += ar1[i, k] * ar2[k, j];
+                }
+            }
+        });
+    }
+
+    private double[,] CreateArray(int res)
+    {
+        Random rd = new Random();
+        double[,] a = new double[res, res];
+        for (int i = 0; i < res; i++)
+        {
+            for (int j = 0; j < res; j++)
+            {
+                a[i, j] = rd.NextDouble() * 10;
+            }
+        }
+        return a;
+    }
+
+    public void PrintResult()
+    {
+        for (int i = 0; i < resolution; i++)
+        {
+            for (int j = 0; j < resolution; j++)
             {
                 Console.Write(Math.Ceiling(result[i, j] * 100) / 100 + "\t");
             }
             Console.WriteLine();
         }
-    }
-    private double[,] CreateArray(int res)
-    {
-        Random rd = new Random();
-        double[,] a = new double[res, res];
-        for (int k = 0; k < res; k++)
-        {
-            for (int i = 0; i < res; i++)
-            {
-                a[i,k] = rd.NextDouble() * 10;
-            }
-        }
-        return a;
     }
 }
 
@@ -60,38 +81,114 @@ public class ThreadApp
 {
     static void Main()
     {
+
         Stopwatch sw = new Stopwatch();
 
-        sw.Start();
-
-        App app = new App();
-        ThreadApp threadApp = new ThreadApp();
-        Thread.CurrentThread.Name = "main";
-        for (int i = 0; i < app.x - 1; i++)
+        Console.WriteLine("Введите способ выполнения задачи: ");
+        Console.WriteLine("1 - Библиотека Thread");
+        Console.WriteLine("2 - Метод Parallel.For");
+        Console.WriteLine("3 - Тест производительности");
+        Console.WriteLine("0 - Выход");
+        bool correct = true;
+        while (correct)
         {
-            Thread th = new Thread(new ParameterizedThreadStart(Work));
-            th.Name = $"th{i}";
-            th.Start(app);
+            Console.Write("Способ: ");
+            string key = Console.ReadLine();
+            Console.WriteLine();
+            switch (key)
+            {
+                case "1":
+                    Console.Write("Введите количество потоков: ");
+                    int x = Convert.ToInt32(Console.ReadLine());
+
+                    Console.Write("Введите размерность матрицы: ");
+                    int resolution = Convert.ToInt32(Console.ReadLine());
+
+                    App app = new App(x, resolution);
+                    sw.Start();
+
+                    Thread[] threads = new Thread[x];
+                    for (int i = 0; i < x; i++)
+                    {
+                        int start = i * resolution / x;
+                        int end = (i == x - 1) ? resolution : (i + 1) * resolution / x;
+                        threads[i] = new Thread(() => app.DGEMM_BLAS(start, end));
+                        threads[i].Start();
+                    }
+
+                    foreach (Thread thread in threads)
+                    {
+                        thread.Join();
+                    }
+
+                    sw.Stop();
+                    correct = false;
+                    break;
+
+                case "2":
+                    Console.Write("Введите количество потоков: ");
+                    int z = Convert.ToInt32(Console.ReadLine());
+
+                    Console.Write("Введите размерность матрицы: ");
+                    int resolution2 = Convert.ToInt32(Console.ReadLine());
+
+                    App app1 = new App(z, resolution2);
+
+                    sw.Start();
+
+                    app1.DGEMM_BLASS_PARALLEL();
+
+                    sw.Stop();
+
+                    //app.PrintResult();
+                    correct = false;
+                    break;
+
+                case "3":
+                    int time = 100000;
+                    int HowManyThreads = 1;
+                    for (int threadsTest = 1; threadsTest <= Environment.ProcessorCount * 2; threadsTest++)
+                    {
+                        App appTest = new App(threadsTest, 500);
+
+                        sw.Start();
+
+                        appTest.DGEMM_BLASS_PARALLEL();
+
+                        sw.Stop();
+                        Console.WriteLine($"Количество потоков: {threadsTest}, Время выполнения: {sw.ElapsedMilliseconds} ms");
+                        if (Convert.ToInt32(sw.ElapsedMilliseconds) < time)
+                        {
+                            time = Convert.ToInt32(sw.ElapsedMilliseconds);
+                            HowManyThreads = threadsTest;
+                        }
+                        sw.Reset();
+                    }
+                    Console.WriteLine("\n___________Тест производительности показала___________");
+                    Console.WriteLine($"Оптимальное число потоков: {HowManyThreads}");
+                    Console.WriteLine("\n\nВведите способ выполнения задачи: ");
+                    Console.WriteLine("1 - Библиотека Thread");
+                    Console.WriteLine("2 - Метод Parallel.For");
+                    Console.WriteLine("3 - Тест производительности");
+                    Console.WriteLine("0 - Выход");
+                    break;
+
+                case "0":
+                    correct = false;
+                    break;
+
+                default:W
+                    Console.WriteLine("Некорректный ввод. Попробуйте еще раз\n\n");
+                    Console.WriteLine("Введите способ выполнения задачи: ");
+                    Console.WriteLine("1 - Библиотека Thread");
+                    Console.WriteLine("2 - Метод Parallel.For");
+                    Console.WriteLine("3 - Тест производительности");
+                    Console.WriteLine("0 - Выход");
+                    break;
+            }
         }
-        app.DGEMM_BLAS(app.resolution, 0, app.resolution / app.x);
-        Thread.CurrentThread.Join();
-        sw.Stop();
-        Console.WriteLine(sw);
-    }
 
-
-    static void Work(object apClass)
-    {
-
-        App data = (App)apClass;
-        int id = Convert.ToInt32(Thread.CurrentThread.Name.Substring(2));
-        if ((data.resolution % data.x != 0) & (id + 1 == data.x))
-        {
-            data.DGEMM_BLAS(data.resolution, data.resolution / data.x * (id + 1), data.resolution / data.x * (id + 2) + data.resolution % data.x);
-        } else
-        {
-            data.DGEMM_BLAS(data.resolution, data.resolution / data.x * (id + 1), data.resolution / data.x * (id + 2));
-        }
-
+        //app.PrintResult();
+        Console.WriteLine($"Время выполнения: {sw.ElapsedMilliseconds} ms");
     }
 }
